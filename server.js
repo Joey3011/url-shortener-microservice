@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
     res.sendFile(process.cwd() + '/views/index.html');
 });
   
-app.post('/api/shorturl/new', function(req, res){
+app.post('/api/shorturl/', function(req, res){
     console.log(req.body)
     const bodyUrl = req.body.url
     const wander = dns.lookup(urlparser.parse(bodyUrl).hostname, (err, urlAddress) => {
@@ -55,14 +55,13 @@ app.post('/api/shorturl/new', function(req, res){
 })
 
 app.get('/api/shorturl/:id',  (req, res) => {
-    const id = req.body.id
-    Url.findById(id, (err, data) => {
+    const id = req.params.id
+    console.log(id)
+    Url.findById((id), (err, data) => {
         if(!data){
             res.json({ error: "Invalid URL" })
-        } else{
-            res.redirect(data.Url)
-        }
-            
+        } 
+        res.redirect(data.url)   
     })
 });
 
